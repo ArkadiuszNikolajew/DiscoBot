@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from frames import Frame
 
 
 class Info(commands.Cog):
@@ -16,33 +17,12 @@ class Info(commands.Cog):
 
     @commands.command()
     async def user_info(self, ctx, member: discord.Member = None):
-        """Info o użytkowniku. Przykład: !user_info @testuser"""
+        """
+        Shows info about user, e.g {command_prefix}user_info @testuser.
+        If member argument is not passed show info about user invoking the command
+        """
         member = ctx.author if not member else member
-        role_names = [role.name for role in member.roles]
-
-        u_info = discord.Embed(colour=member.colour,
-                               timestamp=ctx.message.created_at)
-        u_info.set_author(name=f'Informacje o {member}')
-        u_info.set_thumbnail(url=member.avatar_url)
-        u_info.set_footer(text=f'Wywołane przez {ctx.author}',
-                          icon_url=ctx.author.avatar_url)
-        u_info.add_field(name='ID', value=member.id, inline=False)
-        u_info.add_field(name='Nazwa na serwerze:',
-                         value=member.display_name, inline=False)
-        u_info.add_field(name='Status:', value=member.status, inline=False)
-        u_info.add_field(name='Dołączył do Discord:',
-                         value=member.created_at.strftime('%A, %d.%m.%Y o %H:%M'),
-                         inline=False)
-        u_info.add_field(name=f'Dołączył do {ctx.guild.name}a:',
-                         value=member.joined_at.strftime('%A, %d.%m.%Y o %H:%M'),
-                         inline=False)
-        u_info.add_field(name=f'Role ({len(member.roles)})',
-                         value=', '.join(role for role in role_names),
-                         inline=False)
-        u_info.add_field(name='Bot?', value='Nie' if not member.bot else 'Tak',
-                         inline=False)
-
-        await ctx.send(embed=u_info)
+        await ctx.send(embed=Frame().user_info(ctx, member))
 
 
 def setup(bot):

@@ -10,10 +10,16 @@ import asyncio
 
 base_path = os.path.dirname(__file__)
 locale.setlocale(locale.LC_ALL, "pl_PL.UTF-8")
+load_dotenv()
+
 intents = discord.Intents.all()
 intents.typing = False
-load_dotenv()
-bot = commands.Bot(command_prefix=os.environ.get("COMMAND_PREFIX"), intents=intents)
+intents.presences = False
+bot = commands.Bot(
+    command_prefix=os.environ.get("COMMAND_PREFIX"),
+    intents=intents,
+    description='Content prefixed into default help message'
+)
 
 
 # with open('json_config.json') as file:
